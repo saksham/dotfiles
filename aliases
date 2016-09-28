@@ -4,6 +4,7 @@ alias ln="ln -v"
 alias mkdir="mkdir -p"
 alias e="$EDITOR"
 alias v="$VISUAL"
+alias tree="tree -a"
 
 # Bundler
 alias b="bundle"
@@ -14,6 +15,12 @@ alias s="rspec"
 
 # Pretty print the path
 alias path='echo $PATH | tr -s ":" "\n"'
+
+# Tools
+alias mux=tmuxinator
+
+# Python
+alias ipy="python -c 'import IPython;IPython.terminal.ipapp.launch_new_instance()'"
 
 # Include custom aliases
 [[ -f ~/.aliases.local ]] && source ~/.aliases.local
