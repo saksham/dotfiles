@@ -79,10 +79,6 @@ if executable('ag')
   endif
 endif
 
-" Make it obvious where 120 characters is (80 chars is so old school!)
-set textwidth=120
-set colorcolumn=+1
-
 " Numbers
 set number
 set numberwidth=5
