@@ -22,8 +22,5 @@ alias mux=tmuxinator
 # Python
 alias ipy="python -c 'import IPython;IPython.terminal.ipapp.launch_new_instance()'"
 
-# AWS
-alias assumeRole="aws-mfa --profile $AWS_PROFILE_NAME --device $AWS_MFA_DEVICE_ID --duration $AWS_TOKEN_VALID_DURATION --assume-role $AWS_ASSUMED_ROLE --role-session-name ASSUMED_AWS_SESSION"
-
 # Include custom aliases
 [[ -f ~/.aliases.local ]] && source ~/.aliases.local
