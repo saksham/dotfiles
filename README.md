@@ -15,7 +15,7 @@ Install
 
 Clone onto your laptop:
 
-    git clone git://github.com/thoughtbot/dotfiles.git ~/dotfiles
+    git clone git://github.com/thoughtbot/dotfiles.git ~/settings/dotfiles
 
 (Or, [fork and keep your fork
 updated](http://robots.thoughtbot.com/keeping-a-github-fork-updated)).
@@ -26,8 +26,9 @@ Install [rcm](https://github.com/thoughtbot/rcm):
     brew install rcm
 
 Install the dotfiles:
+    create a folder called settings in your $HOME directory.
 
-    env RCRC=$HOME/dotfiles/rcrc rcup
+    env RCRC=$HOME/settings/dotfiles/rcrc rcup
 
 After the initial installation, you can run `rcup` without the one-time variable
 `RCRC` being set (`rcup` will symlink the repo's `rcrc` to `~/.rcrc` for future
