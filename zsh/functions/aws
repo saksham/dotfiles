@@ -1,0 +1,151 @@
+# Standardises refresh of the AWS token
+refreshAwsToken() {
+  profile=$1
+  device=$2
+  role=$3
+  duration=$4
+  aws-mfa --profile $profile --duration $duration --device $device --role-session-name "AWS_ASSUMED_SESSION_$profile" --assume-role $role
+  [[ $? -eq 0 ]] && export AWS_PROFILE=$profile
+}
+
+# Displays Cloudformation stack outputs by given stack
+stackOutputs() {
+  stack=$1
+  aws cloudformation describe-stacks --stack-name $stack --output table --query 'Stacks[].Outputs[]'
+}
+
+stackExports(){
+  stack=$1
+  aws cloudformation list-exports --query "Exports[?Name=='${stack}'].[Name,Value]" --output table
+}
+
+getSecret(){
+  key=$1
+  aws ssm get-parameter --name "${key}" --with-decryption | jq .Parameter.Value -r
+}
+
+killInstance(){
+  instance=$1
+  aws ec2 terminate-instances --instance-ids $instance
+}
+
+# Displays the latest Cloudformation erros of a stack
+getCloudFormationError(){
+  stack=$1
+  aws cloudformation describe-stack-events --stack-name $stack --max-items 10 | jq -r '.StackEvents[] | select(.ResourceStatusReason != null) | .Timestamp + " -> " + .LogicalResourceId + ": " + .ResourceStatusReason'
+}
+
+# Prints export statements for the config of a lambda for local development
+exportLambdaConf() {
+  lambda=$1
+  aws lambda get-function-configuration --function-name $lambda | jq .Environment.Variables | jsonenv
+}
+
+# Watches the logs of a lambda function
+watchLambda() {
+  lambda=$1
+  shift
+  awslogs get -G -S --watch "/aws/lambda/$lambda" $@
+}
+
+# Watches API Gateway logs (needs env, works only with one API in account)
+watchApi() {
+  env=$1
+  awslogs get --watch "API-Gateway-Execution-Logs_$(aws apigateway get-rest-apis | jq -r .items[].id)/${env}" $@
+}
+
+
+# Invokes a lambda function with a given payloads and displays the result
+lambdaInvoke(){
+  lambda=$1
+  payload=$2
+  aws lambda invoke --function-name $lambda --payload $payload lambda_out.txt && cat lambda_out.txt
+}
+
+# Get the policies of a Lambda to check the permissions
+getLambdaPolicy(){
+  lambda=$1
+  aws lambda get-policy --function-name $lambda | jq -r .Policy | jq
+}
+
+hostnameLookup() {
+  image_name=$1
+  all_but_first_arg=$@[2,-1]
+  if [[ $host =~ ^i\- ]]; then
+    host=$(aws ec2 describe-instances --instance-ids $host $all_but_first_arg|jq '.Reservations[0].Instances[0].PublicDnsName'|tr -d '"')
+  else
+    host=$1
+  fi
+  return $host
+}
+
+# Runs a docker container and forwards it local AWS credentials (similiar as running it on ECS)
+dockerRunAws(){
+  aws_access_key=$(aws configure get aws_access_key_id)
+  aws_secret_key=$(aws configure get aws_secret_access_key)
+  aws_session_token=$(aws configure get aws_session_token)
+  echo "$aws_access_key"
+  echo "$aws_secret_key"
+  echo "$aws_session_token"
+  docker run \
+    -e AWS_ACCESS_KEY_ID=$aws_access_key \
+    -e AWS_SECRET_ACCESS_KEY=$aws_secret_key \
+    -e AWS_SESSION_TOKEN=$aws_session_token  \
+    -e AWS_REGION=eu-west-1  \
+    -e AWS_DEFAULT_REGION=eu-west-1  \
+    $@
+}
+
+# Get the CodeDeploy logs for a deployment (WIP)
+getDeployLogs(){
+  deploymentgroupname=$1
+  applicationname=$2
+  instanceid=$3
+  aws deploy get-deployment-instance --deployment-id $(aws deploy get-deployment-group --deployment-group-name $deploymentgroupname --application-name $applicationname | jq -r .deploymentGroupInfo.lastAttemptedDeployment.deploymentId) --instance-id $instanceid | jq -r .instanceSummary.lifecycleEvents[].diagnostics.logTail
+
+}
+
+# Lists the instances of a given auto scaling group
+describeAutoScaling(){
+  for i in `aws autoscaling describe-auto-scaling-groups --auto-scaling-group-name $1 | grep -i instanceid  | awk '{ print $2}' | cut -d',' -f1| sed -e 's/"//g'`
+  do
+    aws ec2 describe-instances --instance-ids $i | jq -r '.Reservations[].Instances[] | "Priv: " + .PrivateIpAddress + " Pub: " + .PublicIpAddress'
+  done;
+}
+
+headS3(){
+  bucket=$1
+  key=$2
+  aws s3api get-object --bucket $bucket --key $key --range bytes=0-10000000 tmp_file.txt && head tmp_file.txt
+}
+
+s3Size() {
+  bucket=$1
+  now=$(date +%s)
+  no_bytes=$(aws cloudwatch get-metric-statistics --namespace AWS/S3 --start-time "$(echo "$now - 86400" | bc)" --end-time "$now" --period 86400 \
+    --statistics Average --metric-name BucketSizeBytes --dimensions Name=BucketName,Value="$bucket" Name=StorageType,Value=StandardStorage \
+    | jq -r .Datapoints[].Average)
+  no_gbs=$(printf '%.3f\n' $(echo "$no_bytes / 1024.0 / 1024.0 / 1024.0" | bc -l))
+  echo "$no_gbs GB"
+}
+
+s3Inventory() {
+  for bucket in $(aws s3 ls | awk '{print $3}') ; do
+    size_bucket=$(s3Size $bucket)
+    echo "$bucket -> $size_bucket"
+  done
+}
+
+cfnLogs() {
+  stack=$1
+  aws cloudformation describe-stack-events --stack-name $stack | jq -r '.StackEvents[] | [.Timestamp, .LogicalResourceId, .ResourceStatus, .ResourceStatusReason] | @tsv' | head -n 50
+}
+
+showAwsCredentials(){
+  echo "AWS_ACCESS_KEY " $AWS_ACCESS_KEY
+  echo "AWS_ACCESS_KEY_ID " $AWS_ACCESS_KEY_ID
+  echo "AWS_SECRET_KEY " $AWS_SECRET_KEY
+  echo "AWS_SECRET_ACCESS_KEY " $AWS_SECRET_ACCESS_KEY
+  echo "AWS_SESSION_TOKEN " $AWS_SESSION_TOKEN
+  echo "AWS_SECURITY_TOKEN " $AWS_SECURITY_TOKEN
+}

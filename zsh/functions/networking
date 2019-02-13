@@ -1,0 +1,11 @@
+# Find out which PID is listening to a given port
+findPort(){
+  port=$1
+  lsof -i tcp:$1
+}
+
+# Kills the application which is listening to a given port
+killPort(){
+  port=$1
+  kill -9 $(lsof -t -i tcp:$port)
+}

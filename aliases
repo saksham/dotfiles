@@ -22,5 +22,16 @@ alias mux=tmuxinator
 # Python
 alias ipy="python -c 'import IPython;IPython.terminal.ipapp.launch_new_instance()'"
 
+# AWS CLI
+alias lsAutoScaling="aws autoscaling describe-auto-scaling-groups | jq -r .AutoScalingGroups[].AutoScalingGroupName"
+alias lsInstances="aws ec2 describe-instances --filters "Name=instance-state-name,Values=running,stopped,stopping" | jq -r '.Reservations[].Instances[] | .InstanceId + \" Priv: \" + .PrivateIpAddress + \" Pub: \" + .PublicIpAddress + \" Name: \" + (.Tags[]//[]|select(.Key==\"Name\")|.Value)'"
+alias lsLambdas="aws lambda list-functions | jq -r .Functions[].FunctionName"
+alias lsStacks="aws cloudformation list-stacks --stack-status-filter CREATE_COMPLETE UPDATE_COMPLETE UPDATE_ROLLBACK_COMPLETE | jq -r .StackSummaries[].StackName"
+alias lsRds="aws rds describe-db-clusters | jq -r '.DBClusters[] | .DBClusterIdentifier + \" URI: \" + .ReaderEndpoint'"
+
+
+# Github
+alias prs="gh pr --all --list --detailed"
+
 # Include custom aliases
 [[ -f ~/.aliases.local ]] && source ~/.aliases.local
