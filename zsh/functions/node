@@ -1,0 +1,30 @@
+# Inspired from https://stackoverflow.com/questions/42950501/delete-node-modules-folder-recursively-from-a-specified-path-using-command-line
+rmNodeModules() {
+    dir=$1
+    USAGE="Usage: rmNodeModules PATH --dry-run"
+
+    if [ -z "${dir}" ]; then
+        echo ${USAGE}
+        return 1
+    fi
+
+    dryRun="True"
+    if [ -n "$2" ]; then
+        if [ "$2" != "--dry-run" ]; then
+            echo ${USAGE};
+            return 1
+        fi
+    else
+        dryRun="False"
+    fi
+
+    if [ "${dryRun}" == "False" ]; then
+        command="rm -rvf"
+    else
+        echo "NOTE: running in dry run, the following files would be deleted"
+        command="echo"
+    fi
+
+    fullCommand="find ${dir} -name 'node_modules' -type d -prune -exec ${command} '{}' \;"
+    eval ${fullCommand}
+}
