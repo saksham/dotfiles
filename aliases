@@ -1,12 +1,13 @@
 # Unix
-alias ll="ls -al"
 alias ln="ln -v"
 alias mkdir="mkdir -p"
 alias e="$EDITOR"
 alias v="$VISUAL"
 alias tree="tree -a"
 alias ls="colorls" # gem install colorls
+alias ll="ls -a -l"
 alias cat="bat"    # brew install bat
+
 
 # Bundler
 alias b="bundle"
@@ -35,5 +36,5 @@ alias lsRds="aws rds describe-db-clusters | jq -r '.DBClusters[] | .DBClusterIde
 # Github
 alias prs="gh pr --all --list --detailed"
 
-# Include custom aliases
-[[ -f ~/.aliases.local ]] && source ~/.aliases.local
+# Include all custom aliases
+for a in ~/.aliases.*; do source $a; done
