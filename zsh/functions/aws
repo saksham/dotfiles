@@ -136,6 +136,6 @@ cfnLogs() {
   aws cloudformation describe-stack-events --stack-name $stack | jq -r '.StackEvents[] | [.Timestamp, .LogicalResourceId, .ResourceStatus, .ResourceStatusReason] | @tsv' | head -n 50
 }
 
-whoamiAws() {
+awswhoami() {
   aws sts get-caller-identity
 }
