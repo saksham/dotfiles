@@ -11,12 +11,18 @@ refreshAwsToken() {
 # Displays Cloudformation stack outputs by given stack
 stackOutputs() {
   stack=$1
-  aws cloudformation describe-stacks --stack-name $stack --output table --query 'Stacks[].Outputs[]'
+  keyFilter=$2
+  filterQuery=""
+
+  if [ -n "${keyFilter}" ]; then
+      filterQuery="?contains(OutputKey, \`${keyFilter}\`)"
+  fi
+  aws cloudformation describe-stacks --stack-name $stack --output table --query "Stacks[].Outputs[${filterQuery}]"
 }
 
 stackExports(){
   stack=$1
-  aws cloudformation list-exports --query "Exports[?Name=='${stack}'].[Name,Value]" --output table
+  aws cloudformation list-exports --query "Exports[?Name==\"${stack}\"].[Name,Value]" --output table
 }
 
 getSecret(){
@@ -68,17 +74,6 @@ getLambdaPolicy(){
   aws lambda get-policy --function-name $lambda | jq -r .Policy | jq
 }
 
-hostnameLookup() {
-  image_name=$1
-  all_but_first_arg=$@[2,-1]
-  if [[ $host =~ ^i\- ]]; then
-    host=$(aws ec2 describe-instances --instance-ids $host $all_but_first_arg|jq '.Reservations[0].Instances[0].PublicDnsName'|tr -d '"')
-  else
-    host=$1
-  fi
-  return $host
-}
-
 # Runs a docker container and forwards it local AWS credentials (similiar as running it on ECS)
 dockerRunAws(){
   aws_access_key=$(aws configure get aws_access_key_id)
@@ -116,7 +111,7 @@ describeAutoScaling(){
 headS3(){
   bucket=$1
   key=$2
-  aws s3api get-object --bucket $bucket --key $key --range bytes=0-10000000 tmp_file.txt && head tmp_file.txt
+  aws s3api get-object --bucket $bucket --key $key --range bytes=0-10000000 /tmp/head_s3_tmp.txt && head /tmp/head_s3_tmp.txt
 }
 
 s3Size() {
@@ -141,11 +136,6 @@ cfnLogs() {
   aws cloudformation describe-stack-events --stack-name $stack | jq -r '.StackEvents[] | [.Timestamp, .LogicalResourceId, .ResourceStatus, .ResourceStatusReason] | @tsv' | head -n 50
 }
 
-showAwsCredentials(){
-  echo "AWS_ACCESS_KEY " $AWS_ACCESS_KEY
-  echo "AWS_ACCESS_KEY_ID " $AWS_ACCESS_KEY_ID
-  echo "AWS_SECRET_KEY " $AWS_SECRET_KEY
-  echo "AWS_SECRET_ACCESS_KEY " $AWS_SECRET_ACCESS_KEY
-  echo "AWS_SESSION_TOKEN " $AWS_SESSION_TOKEN
-  echo "AWS_SECURITY_TOKEN " $AWS_SECURITY_TOKEN
+whoamiAws() {
+  aws sts get-caller-identity
 }
