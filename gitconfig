@@ -14,6 +14,8 @@
   co = checkout
   pf = push --force-with-lease
   st = status
+  # you can do stuff such as `git all pull` or `GIT_PAGER=cat git all "log --oneline -5"` which executes the commands given after `all` in all subdirectories that are git repositories
+  all = "!f() { ls -R -d */.git | xargs -I{} bash -c \"echo -e '\\033[31m\n***** {} *****\\033[0m' && git -C {}/../ $1\"; }; f"
 [core]
   excludesfile = ~/.gitignore
   autocrlf = input
