@@ -139,3 +139,8 @@ cfnLogs() {
 awswhoami() {
   aws sts get-caller-identity
 }
+
+kinesisTail(){
+    streamname=$1
+    aws kinesis describe-stream --stream-name $streamname --output text | grep SHARDS | awk '{print $2}' | while read shard; do aws kinesis get-shard-iterator --stream-name $streamname --shard-id $shard --shard-iterator-type LATEST --output text | while read iterator; do while output=`aws kinesis get-records --shard-iterator $iterator --output text`; do iterator=`echo "$output" | head -n1 | awk '{print $2}'`; echo "$output" | sed 1d | grep RECORDS | while read record; do echo $record | awk '{print $3}' | base64 -D; done; done; done; done
+}

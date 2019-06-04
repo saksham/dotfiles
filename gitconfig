@@ -3,7 +3,7 @@
 [push]
   default = current
 [color]
-  ui = auto
+  ui = true
 [alias]
   incoming = "!git remote update -p; git log ..@{u}"
   outgoing = log @{u}..
@@ -29,3 +29,8 @@
   path = ~/.gitconfig.local
 [diff]
   colorMoved = zebra
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
