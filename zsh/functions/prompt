@@ -1,0 +1,11 @@
+# Source: https://superuser.com/questions/625652/alias-empty-command-in-terminal/625663#625663
+magic-enter () {
+        if [[ -z $BUFFER ]]
+        then
+                zle clear-screen
+        else
+                zle accept-line
+        fi
+}
+zle -N magic-enter
+bindkey "^M" magic-enter
