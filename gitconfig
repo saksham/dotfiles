@@ -17,12 +17,12 @@
   # you can do stuff such as `git all pull` or `GIT_PAGER=cat git all "log --oneline -5"` which executes the commands given after `all` in all subdirectories that are git repositories
   all = "!f() { ls -R -d */.git | xargs -I{} bash -c \"echo -e '\\033[31m\n***** {} *****\\033[0m' && git -C {}/../ $1\"; }; f"
 [core]
-  excludesfile = ~/.gitignore
+	excludesfile = ~/.gitignore
   autocrlf = input
 [merge]
   ff = only
 [commit]
-  template = ~/.gitmessage
+	template = ~/.gitmessage
 [fetch]
   prune = true
 [rebase]
@@ -36,3 +36,11 @@
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+[credential]
+	helper = osxkeychain

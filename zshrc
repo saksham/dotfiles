@@ -39,3 +39,4 @@ _load_settings "$HOME/.zsh/configs"
 
 # Include all custom local configs
 for a in ~/.zshrc.*; do source $a; done
+
