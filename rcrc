@@ -1,2 +1,2 @@
-EXCLUDES="README.md LICENSE"
+EXCLUDES="README.md LICENSE images"
 DOTFILES_DIRS="$HOME/settings/dotfiles-local $HOME/settings/dotfiles"

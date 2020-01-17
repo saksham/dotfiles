@@ -46,7 +46,7 @@
 	trustExitCode = true
 [user]
 	name = Saksham Gautam
-	email = 
+	email = saksham.gautam@gmail.com
 [credential]
 	helper = osxkeychain
 [color "diff-highlight"]

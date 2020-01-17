@@ -1,3 +1,5 @@
+#!/bin/sh
+
 brew install tmuxinator zsh-syntax-highlighting jq cat jenv openssl pyenv
 
 
