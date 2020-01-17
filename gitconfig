@@ -44,11 +44,6 @@
 [mergetool "sourcetree"]
 	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
 	trustExitCode = true
-[user]
-	name = Saksham Gautam
-	email = 
-[credential]
-	helper = osxkeychain
 [color "diff-highlight"]
 	oldNormal = red bold
 	oldHighlight = red bold 52
