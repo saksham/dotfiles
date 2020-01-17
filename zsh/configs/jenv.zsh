@@ -1,5 +1,5 @@
 # (brew install jenv)
-if which jenv &>/dev/null ; then
+if has jenv; then
     export PATH="$HOME/.jenv/bin:$PATH"
     eval "$(jenv init -)"
 fi

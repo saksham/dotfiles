@@ -20,14 +20,14 @@ POWERLEVEL9K_STATUS_VERBOSE=false
 POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD=0
 POWERLEVEL9K_COMMAND_EXECUTION_TIME_BACKGROUND='none'
 POWERLEVEL9K_COMMAND_EXECUTION_TIME_FOREGROUND='blue'
-POWERLEVEL9K_VCS_GIT_ICON='\uf1d2 '
-POWERLEVEL9K_VCS_GIT_GITHUB_ICON='\uf113 '
-POWERLEVEL9K_VCS_BRANCH_ICON=''
-POWERLEVEL9K_VCS_STAGED_ICON='\uf055'
-POWERLEVEL9K_VCS_UNSTAGED_ICON='\uf421'
-POWERLEVEL9K_VCS_UNTRACKED_ICON='\uf00d'
-POWERLEVEL9K_VCS_INCOMING_CHANGES_ICON='\uf0ab '
-POWERLEVEL9K_VCS_OUTGOING_CHANGES_ICON='\uf0aa '
+POWERLEVEL9K_VCS_GIT_ICON=$'\uf1d2 '
+POWERLEVEL9K_VCS_GIT_GITHUB_ICON=$'\uf113 '
+POWERLEVEL9K_VCS_BRANCH_ICON=$''
+POWERLEVEL9K_VCS_STAGED_ICON=$'\uf055'
+POWERLEVEL9K_VCS_UNSTAGED_ICON=$'\uf421'
+POWERLEVEL9K_VCS_UNTRACKED_ICON=$'\uf00d'
+POWERLEVEL9K_VCS_INCOMING_CHANGES_ICON=$'\uf0ab '
+POWERLEVEL9K_VCS_OUTGOING_CHANGES_ICON=$'\uf0aa '
 POWERLEVEL9K_VCS_SHORTEN_LENGTH=25
 POWERLEVEL9K_VCS_SHORTEN_MIN_LENGTH=25
 POWERLEVEL9K_VCS_SHORTEN_STRATEGY="truncate_from_right"
@@ -45,12 +45,23 @@ prompt_aws_profile(){
   [[ -n $AWS_PROFILE ]] && echo -n "%{%B%F{white}%K{$color)}%} $AWS_PROFILE"
 }
 
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context virtualenv ssh root_indicator dir vcs)
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(aws_profile status command_execution_time)
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
+  os_icon 
+  virtualenv 
+  ssh 
+  root_indicator 
+  dir 
+  vcs
+)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(
+  aws_profile 
+  status
+  background_jobs
+  command_execution_time
+)
 
 # Set name of the theme to load.
-# Look in ~/.oh-my-zsh/themes/
-ZSH_THEME="powerlevel9k/powerlevel9k"
+ZSH_THEME='powerlevel10k/powerlevel10k'
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -87,6 +98,6 @@ ZSH_THEME="powerlevel9k/powerlevel9k"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git git-it-on wd ssh-agent tmux tmuxinator docker git-flow fzf)
+plugins=(git git-it-on wd ssh-agent tmux tmuxinator docker git-flow fzf colored-man-pages)
 
 source $ZSH/oh-my-zsh.sh

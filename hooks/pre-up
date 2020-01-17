@@ -1,0 +1,19 @@
+brew install tmuxinator zsh-syntax-highlighting jq cat jenv openssl pyenv
+
+
+# Set the default shell to zsh if it isn't currently set to zsh
+if [[ ! "$SHELL" == "$(command -v zsh)" ]]; then
+    chsh -s "$(command -v zsh)"
+fi
+# Clone Oh My Zsh if it isn't already present
+if [[ ! -d $HOME/.oh-my-zsh/ ]]; then
+    git clone --depth=1 https://github.com/robbyrussell/oh-my-zsh.git "$HOME/.oh-my-zsh"
+fi
+
+# Clone Powerlevel10k if it isn't already present.
+if [[ ! -d $HOME/.oh-my-zsh/custom/themes/powerlevel10k ]]; then
+    git clone https://github.com/romkatv/powerlevel10k.git "$HOME/.oh-my-zsh/custom/themes/powerlevel10k"
+else
+    # Pull any p10k updates.
+    git -C "$HOME/.oh-my-zsh/custom/themes/powerlevel10k" pull --quiet
+fi

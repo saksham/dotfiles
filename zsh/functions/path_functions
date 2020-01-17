@@ -1,0 +1,13 @@
+# Prepend a directory to path, if it exists and isn't already in the path.
+prepend_to_path() {
+  if [ -d $1 -a -z ${path[(r)$1]} ]; then
+    path=($1 $path);
+  fi
+}
+
+# Append a directory to path, if it exists and isn't already in the path.
+append_to_path() {
+  if [ -d $1 -a -z ${path[(r)$1]} ]; then
+    path=($path $1);
+  fi
+}
