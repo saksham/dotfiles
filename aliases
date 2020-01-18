@@ -24,6 +24,7 @@ alias mux=tmuxinator
 
 # Python
 alias ipy="python -c 'import IPython;IPython.terminal.ipapp.launch_new_instance()'"
+alias pip-compile="pip-compile --no-index"
 
 # AWS CLI
 alias lsAutoScaling="aws autoscaling describe-auto-scaling-groups | jq -r .AutoScalingGroups[].AutoScalingGroupName"

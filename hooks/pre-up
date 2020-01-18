@@ -1,6 +1,6 @@
 #!/bin/sh
 
-brew install tmuxinator zsh-syntax-highlighting jq bat jenv openssl pyenv
+brew install tmuxinator zsh-syntax-highlighting jq bat jenv openssl pyenv pyenv-virtualenv
 
 
 # Set the default shell to zsh if it isn't currently set to zsh
