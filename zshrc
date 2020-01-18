@@ -42,3 +42,6 @@ zshrc_files=(*.zshrc.*(N))
 if [[ $zshrc_files ]]; then
   for a in ~/.zshrc.*; do source $a; done
 fi
+
+# Some plugins only work when loaded at last
+for a in ~/.zsh/plugins/*.zsh; do source $a; done
