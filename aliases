@@ -39,8 +39,4 @@ alias prs="gh pr --all --list --detailed"
 alias myprs="gh pr --me --all --link"
 
 # Include all custom aliases
-# Include all custom local configs
-aliases_files=(*.aliases.*(N))
-if [[ $aliases_files ]]; then
-  for a in ~/.aliases.*; do source $a; done
-fi
+for file in $(find ~ -iname .aliases.* -maxdepth 1); do source "$file"; done

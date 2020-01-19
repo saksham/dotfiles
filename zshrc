@@ -38,10 +38,9 @@ _load_settings "$HOME/.zsh/configs"
 [[ -f ~/.aliases ]] && source ~/.aliases
 
 # Include all custom local configs
-zshrc_files=(*.zshrc.*(N))
-if [[ $zshrc_files ]]; then
-  for a in ~/.zshrc.*; do source $a; done
-fi
+for file in $(find ~ -iname .zshrc.* -maxdepth 1); do source "$file"; done
 
 # Some plugins only work when loaded at last
 for a in ~/.zsh/plugins/*.zsh; do source $a; done
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
