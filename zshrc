@@ -38,7 +38,7 @@ _load_settings "$HOME/.zsh/configs"
 [[ -f ~/.aliases ]] && source ~/.aliases
 
 # Include all custom local configs
-for file in $(find ~ -iname .zshrc.* -maxdepth 1); do source "$file"; done
+for file in $(find ~ -iname ".zshrc.*" -maxdepth 1); do source "$file"; done
 
 # Some plugins only work when loaded at last
 for a in ~/.zsh/plugins/*.zsh; do source $a; done

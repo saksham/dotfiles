@@ -39,4 +39,4 @@ alias prs="gh pr --all --list --detailed"
 alias myprs="gh pr --me --all --link"
 
 # Include all custom aliases
-for file in $(find ~ -iname .aliases.* -maxdepth 1); do source "$file"; done
+for file in $(find ~ -iname ".aliases.*" -maxdepth 1); do source "$file"; done
