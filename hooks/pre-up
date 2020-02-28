@@ -1,6 +1,8 @@
 #!/bin/sh
+set -x
 
-brew install tmuxinator zsh-syntax-highlighting jq bat jenv openssl pyenv pyenv-virtualenv
+brew update && brew upgrade
+brew install tmuxinator zsh-syntax-highlighting jq bat jenv openssl pyenv pyenv-virtualenv nvm direnv
 
 
 # Set the default shell to zsh if it isn't currently set to zsh
@@ -18,4 +20,17 @@ if [[ ! -d $HOME/.oh-my-zsh/custom/themes/powerlevel10k ]]; then
 else
     # Pull any p10k updates.
     git -C "$HOME/.oh-my-zsh/custom/themes/powerlevel10k" pull --quiet
+fi
+
+# Initialize plugins directory
+if [[ ! -d $HOME/.oh-my-zsh/custom/plugins ]]; then
+    mkdir $HOME/.oh-my-zsh/custom/plugins
+fi
+
+# Clone zsh-nvm if not done already
+if [[ ! -d $HOME/.oh-my-zsh/custom/plugins/zsh-nvm ]]; then
+    git clone git@github.com:lukechilds/zsh-nvm.git "$HOME/.oh-my-zsh/custom/plugins/zsh-nvm"
+else
+    # Pull any updates
+    git -C "$HOME/.oh-my-zsh/custom/plugins/zsh-nvm" pull --quiet
 fi

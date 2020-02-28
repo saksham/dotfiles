@@ -48,7 +48,8 @@ function prompt_aws_profile(){
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
   os_icon 
   virtualenv 
-  ssh 
+  nvm
+  ssh
   root_indicator 
   dir 
   vcs
@@ -110,6 +111,7 @@ plugins=(
   fzf 
   colored-man-pages
   nvm
+  zsh-nvm
 )
 
 source $ZSH/oh-my-zsh.sh
