@@ -1,5 +1,5 @@
 # Dotfiles 
-Inspired by [Thoughtbot dotfiles](https://github.com/saksham/dotfiles) the one from [MrPickles](https://github.com/MrPickles/dotfiles)
+Inspired by [Thoughtbot dotfiles](https://github.com/saksham/dotfiles) and the one from [MrPickles](https://github.com/MrPickles/dotfiles)
 
 ![screenshot](images/screenshot.png)
 
