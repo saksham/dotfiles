@@ -40,7 +40,7 @@ function prompt_aws_profile(){
     *dev*) color="green" ;;
     *stg*) color="yellow" ;;
     *prod*) color="red" ;;
-    *ops*) color="white" ;;
+    *ops*) color="blue" ;;
   esac
   p10k segment -f "white" -b ${color} -t "$AWS_PROFILE" -c "$AWS_PROFILE"
 }
