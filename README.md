@@ -94,20 +94,21 @@ It's used for a few shortcuts, such as resizing tmux panes.
 
 ### Installation
 
-Clone onto your laptop using the following command.(Or, [fork and keep your fork updated](http://robots.thoughtbot.com/keeping-a-github-fork-updated)).
-
-    git clone https://github.com/saksham/dotfiles ~/settings/dotfiles
-
-Install [rcm](https://github.com/thoughtbot/rcm):
-
+* Install [rcm](https://github.com/thoughtbot/rcm):
+  ```
     brew tap thoughtbot/formulae
     brew install rcm
-
-Install the dotfiles:
-    create a folder called settings in your $HOME directory.
-
+  ```
+* Create a folder called settings in your $HOME directory.
+* Clone onto your laptop using the following command.(Or, [fork and keep your fork updated](http://robots.thoughtbot.com/keeping-a-github-fork-updated)).
+  ```
+   git clone https://github.com/saksham/dotfiles ~/settings/dotfiles
+  ```
+* Install the dotfiles:
+  ```
     env RCRC=$HOME/settings/dotfiles/rcrc rcup
-
+  ```
+  
 After the initial installation, you can run `rcup` without the one-time variable
 `RCRC` being set (`rcup` will symlink the repo's `rcrc` to `~/.rcrc` for future
 runs of `rcup`). [See
