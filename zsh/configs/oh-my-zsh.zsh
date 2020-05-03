@@ -34,28 +34,28 @@ POWERLEVEL9K_VCS_SHORTEN_STRATEGY="truncate_from_right"
 POWERLEVEL9K_VCS_SHORTEN_DELIMITER="\u2026"
 
 # Powerlevel9K prompt segment for AWS
-function prompt_aws_profile(){
+function prompt_aws_profile() {
   local color="none"
   case $AWS_PROFILE in
-    *dev*) color="green" ;;
-    *stg*) color="yellow" ;;
-    *prod*) color="red" ;;
-    *ops*) color="blue" ;;
+  *dev*) color="green" ;;
+  *stg*) color="yellow" ;;
+  *prod*) color="red" ;;
+  *ops*) color="blue" ;;
   esac
   p10k segment -f "white" -b ${color} -t "$AWS_PROFILE" -c "$AWS_PROFILE"
 }
 
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
-  os_icon 
-  virtualenv 
+  os_icon
+  virtualenv
   nvm
   ssh
-  root_indicator 
-  dir 
+  root_indicator
+  dir
   vcs
 )
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(
-  aws_profile 
+  aws_profile
   status
   background_jobs
   command_execution_time
@@ -94,21 +94,19 @@ ZSH_THEME='powerlevel10k/powerlevel10k'
 # much, much faster.
 # DISABLE_UNTRACKED_FILES_DIRTY="true"
 
-
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-  git 
-  git-it-on 
-  wd 
-  ssh-agent 
-  tmux 
-  tmuxinator 
-  docker 
-  git-flow 
-  fzf 
+  git
+  wd
+  ssh-agent
+  tmux
+  tmuxinator
+  docker
+  git-flow
+  fzf
   colored-man-pages
   nvm
   zsh-nvm
