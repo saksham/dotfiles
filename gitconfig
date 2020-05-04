@@ -17,14 +17,14 @@
   # you can do stuff such as `git all pull` or `GIT_PAGER=cat git all "log --oneline -5"` which executes the commands given after `all` in all subdirectories that are git repositories
   all = "!f() { ls -R -d */.git | xargs -I{} bash -c \"echo -e '\\033[31m\n***** {} *****\\033[0m' && git -C {}/../ $1\"; }; f"
 [core]
-	excludesfile = ~/.gitignore
+	excludesfile = /Users/sgtwaice/.gitignore
   autocrlf = input
 	pager = diff-so-fancy | less --tabs=4 -RFX
 [merge]
   ff = only
 [commit]
 	template = ~/.gitmessage
-	gpgsign = true
+  # gpgsign = true
 [fetch]
   prune = true
 [rebase]
@@ -56,3 +56,6 @@
 	old = red bold
 	new = green bold
 	whitespace = red reverse
+[user]
+	name = Saksham Gautam
+	email = gautam.ext@twaice.com

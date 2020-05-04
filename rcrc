@@ -1,2 +1,2 @@
 EXCLUDES="README.md LICENSE images *fish*"
-DOTFILES_DIRS="$HOME/settings/dotfiles-local $HOME/settings/dotfiles"
+DOTFILES_DIRS="$HOME/settings/dotfiles-local $HOME/settings/twaice-dotfiles $HOME/settings/dotfiles"

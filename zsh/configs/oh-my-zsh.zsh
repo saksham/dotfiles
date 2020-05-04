@@ -91,12 +91,9 @@ export UPDATE_ZSH_DAYS=14
 # much, much faster.
 # DISABLE_UNTRACKED_FILES_DIRTY="true"
 
-<<<<<<< Updated upstream
-=======
 # Disable permissions and ownership warnings for auto completion
 ZSH_DISABLE_COMPFIX="true"
 
->>>>>>> Stashed changes
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
