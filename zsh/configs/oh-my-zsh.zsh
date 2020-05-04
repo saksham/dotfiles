@@ -71,11 +71,8 @@ ZSH_THEME='powerlevel10k/powerlevel10k'
 # sensitive completion must be off. _ and - will be interchangeable.
 # HYPHEN_INSENSITIVE="true"
 
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
-
 # Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
+export UPDATE_ZSH_DAYS=14
 
 # Uncomment the following line to disable colors in ls.
 # DISABLE_LS_COLORS="true"
@@ -94,6 +91,12 @@ ZSH_THEME='powerlevel10k/powerlevel10k'
 # much, much faster.
 # DISABLE_UNTRACKED_FILES_DIRTY="true"
 
+<<<<<<< Updated upstream
+=======
+# Disable permissions and ownership warnings for auto completion
+ZSH_DISABLE_COMPFIX="true"
+
+>>>>>>> Stashed changes
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
