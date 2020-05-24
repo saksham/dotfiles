@@ -257,6 +257,7 @@ shell experience in general.
   improve the output of `ALT-C` from `fzf`.
 * [`bat`][bat]: An improved version of `cat`. We use it for the file previews
   when running `CTRL-T` from `fzf`.
+* [httpie](https://httpie.org) with `pip install httpie` to use instead of `curl`.
 
 You should install all of these independently of this dotfile repo.
 (This also includes figuring out how to install them.)
