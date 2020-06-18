@@ -37,10 +37,10 @@ POWERLEVEL9K_VCS_SHORTEN_DELIMITER="\u2026"
 function prompt_aws_profile() {
   local color="none"
   case $AWS_PROFILE in
-  *dev*) color="green" ;;
-  *stg*) color="yellow" ;;
-  *prod*) color="red" ;;
-  *ops*) color="blue" ;;
+    *ops*) color="blue" ;;
+    *dev*) color="green" ;;
+    *stg*) color="yellow" ;;
+    *prod*) color="red" ;;
   esac
   p10k segment -f "white" -b ${color} -t "$AWS_PROFILE" -c "$AWS_PROFILE"
 }
