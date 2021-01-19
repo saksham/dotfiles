@@ -37,10 +37,10 @@ POWERLEVEL9K_VCS_SHORTEN_DELIMITER="\u2026"
 function prompt_aws_profile() {
   local color="none"
   case $AWS_PROFILE in
-  *dev*) color="green" ;;
-  *stg*) color="yellow" ;;
-  *prod*) color="red" ;;
-  *ops*) color="blue" ;;
+    *ops*) color="blue" ;;
+    *dev*) color="green" ;;
+    *stg*) color="yellow" ;;
+    *prod*) color="red" ;;
   esac
   p10k segment -f "white" -b ${color} -t "$AWS_PROFILE" -c "$AWS_PROFILE"
 }
@@ -71,11 +71,8 @@ ZSH_THEME='powerlevel10k/powerlevel10k'
 # sensitive completion must be off. _ and - will be interchangeable.
 # HYPHEN_INSENSITIVE="true"
 
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
-
 # Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
+export UPDATE_ZSH_DAYS=14
 
 # Uncomment the following line to disable colors in ls.
 # DISABLE_LS_COLORS="true"
@@ -93,6 +90,9 @@ ZSH_THEME='powerlevel10k/powerlevel10k'
 # under VCS as dirty. This makes repository status check for large repositories
 # much, much faster.
 # DISABLE_UNTRACKED_FILES_DIRTY="true"
+
+# Disable permissions and ownership warnings for auto completion
+ZSH_DISABLE_COMPFIX="true"
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
