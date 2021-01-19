@@ -1,313 +1,181 @@
-" Use Vim settings, rather then Vi settings (much better!).
-" This must be first, because it changes other options as a side effect.
-set nocompatible
+set encoding=utf-8
 
-set encoding=UTF-8
+" Leader
+let mapleader = " "
 
-" allow backspacing over everything in insert mode
-set backspace=indent,eol,start
-
+set backspace=2   " Backspace deletes like most programs in insert mode
 set nobackup
 set nowritebackup
-set history=50 " keep 50 lines of command line history
-set ruler " show the cursor position all the time
-set showcmd " display incomplete commands
-set incsearch " do incremental searching
-set nowrap " Switch wrap off for everything
-set number
-set numberwidth=5
-set laststatus=2 " Always display the status line
+set noswapfile    " http://robots.thoughtbot.com/post/18739402579/global-gitignore#comment-458413287
+set history=50
+set ruler         " show the cursor position all the time
+set showcmd       " display incomplete commands
+set incsearch     " do incremental searching
+set laststatus=2  " Always display the status line
+set autowrite     " Automatically :write before running commands
+set modelines=0   " Disable modelines as a security precaution
+set nomodeline
+
+" Switch syntax highlighting on, when the terminal has colors
+" Also switch on highlighting the last used search pattern.
+if (&t_Co > 2 || has("gui_running")) && !exists("syntax_on")
+  syntax on
+endif
+
+if filereadable(expand("~/.vimrc.bundles"))
+  source ~/.vimrc.bundles
+endif
+
+" Load matchit.vim, but only if the user hasn't installed a newer version.
+if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
+  runtime! macros/matchit.vim
+endif
+
+filetype plugin indent on
+
+augroup vimrcEx
+  autocmd!
+
+  " When editing a file, always jump to the last known cursor position.
+  " Don't do it for commit messages, when the position is invalid, or when
+  " inside an event handler (happens when dropping a file on gvim).
+  autocmd BufReadPost *
+    \ if &ft != 'gitcommit' && line("'\"") > 0 && line("'\"") <= line("$") |
+    \   exe "normal g`\"" |
+    \ endif
+
+  " Set syntax highlighting for specific file types
+  autocmd BufRead,BufNewFile *.md set filetype=markdown
+  autocmd BufRead,BufNewFile .{jscs,jshint,eslint}rc set filetype=json
+  autocmd BufRead,BufNewFile aliases.local,zshrc.local,*/zsh/configs/* set filetype=sh
+  autocmd BufRead,BufNewFile gitconfig.local set filetype=gitconfig
+  autocmd BufRead,BufNewFile tmux.conf.local set filetype=tmux
+  autocmd BufRead,BufNewFile vimrc.local set filetype=vim
+augroup END
+
+" ALE linting events
+augroup ale
+  autocmd!
+
+  if g:has_async
+    autocmd VimEnter *
+      \ set updatetime=1000 |
+      \ let g:ale_lint_on_text_changed = 0
+    autocmd CursorHold * call ale#Queue(0)
+    autocmd CursorHoldI * call ale#Queue(0)
+    autocmd InsertEnter * call ale#Queue(0)
+    autocmd InsertLeave * call ale#Queue(0)
+  else
+    echoerr "The thoughtbot dotfiles require NeoVim or Vim 8"
+  endif
+augroup END
+
+" When the type of shell script is /bin/sh, assume a POSIX-compatible
+" shell for syntax highlighting purposes.
+let g:is_posix = 1
 
 " Softtabs, 2 spaces
 set tabstop=2
 set shiftwidth=2
+set shiftround
 set expandtab
 
-" Tab completion options
-" (only complete to the longest unambiguous match, and show a menu)
-set completeopt=longest,menu
+" Display extra whitespace
+set list listchars=tab:»·,trail:·,nbsp:·
+
+" Use one space, not two, after punctuation.
+set nojoinspaces
+
+" Use The Silver Searcher https://github.com/ggreer/the_silver_searcher
+if executable('ag')
+  " Use Ag over Grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  " Use ag in fzf for listing files. Lightning fast and respects .gitignore
+  let $FZF_DEFAULT_COMMAND = 'ag --literal --files-with-matches --nocolor --hidden -g ""'
+
+  if !exists(":Ag")
+    command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+    nnoremap \ :Ag<SPACE>
+  endif
+endif
+
+" Make it obvious where 80 characters is
+set textwidth=80
+set colorcolumn=+1
+
+" Numbers
+set number
+set numberwidth=5
+
+" Tab completion
+" will insert tab at beginning of line,
+" will use completion if not at beginning
 set wildmode=list:longest,list:full
-set complete=.,t
-
-" Remap :w and :q to allow the capital letter versions.
-command! Q q
-command! W w
-command! WQ wq
-command! Wq wq
-command! WA wa
-command! Wa wa
-command! QA qa
-command! Qa qa
-command! Wqa wqa
-command! WQa wqa
-command! WQA wqa
-
-" Load plugins
-call plug#begin()
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
-Plug 'junegunn/fzf.vim'
-
-Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-Plug 'Xuyuanp/nerdtree-git-plugin'
-
-Plug 'vim-airline/vim-airline', { 'tag': 'v0.11' }
-
-if executable('node')
-  Plug 'neoclide/coc.nvim', { 'branch': 'release' }
-endif
-
-Plug 'sheerun/vim-polyglot', { 'tag': 'v3.9.0' }
-Plug 'google/vim-maktaba', { 'tag': 'v0.15.0' }
-Plug 'bazelbuild/vim-bazel'
-
-Plug 'altercation/vim-colors-solarized'
-Plug 'ryanoasis/vim-devicons'
-
-Plug 'tpope/vim-scriptease'
-Plug 'tpope/vim-sensible'
-Plug 'psliwka/vim-smoothie'
-
-Plug 'tpope/vim-fugitive', { 'tag': 'v3.0' }
-Plug 'tpope/vim-rhubarb'
-Plug 'airblade/vim-gitgutter'
-call plug#end()
-
-" Map ctrl-n to toggle NERDTree.
-map <C-n> :NERDTreeToggle<CR>
-
-" case only matters with mixed case expressions
-set ignorecase
-set smartcase
-if exists("&wildignorecase")
-  set wildignorecase
-endif
-
-set mouse=a " Enable mouse.
-
-" Switch syntax highlighting on, when the terminal has colors
-" Also switch on highlighting the last used search pattern.
-if (&t_Co > 2 || has("gui_running"))
-  syntax on
-  set hlsearch
-
-  " Color scheme
-  syntax enable
-  set background=dark
-  " solarized won't exist if we didn't run :PlugInstall
-  silent! colorscheme solarized
-  " Make vueSurroundingTag coloring match htmlTag. This is a hack. We match the rule found below:
-  " https://github.com/altercation/vim-colors-solarized/blob/528a59f26d12278698bb946f8fb82a63711eec21/colors/solarized.vim#L762
-  " Unfortunately my VimScript isn't good enough to make this not hardcoded... :(
-  hi! vueSurroundingTag cterm=NONE term=NONE ctermfg=10 ctermbg=NONE
-endif
-
-" Only do this part when compiled with support for autocommands.
-if has("autocmd")
-  " Enable file type detection.
-  " Use the default filetype settings, so that mail gets 'tw' set to 72,
-  " 'cindent' is on in C files, etc.
-  " Also load indent files, to automatically do language-dependent indenting.
-  filetype plugin indent on
-
-  set cino=N-s " do not indent after C++ namespace
-  " Set File type to 'text' for files ending in .txt
-  autocmd BufNewFile,BufRead *.txt setfiletype text
-  " Enable soft-wrapping for text files
-  autocmd FileType text,markdown,html,xhtml,eruby setlocal wrap linebreak nolist
-  " Set default tab width to 4 spaces in Python and Bazel
-  au Filetype python,bzl setl et ts=4 sw=4
-  " Set shell script syntax highlighting for zsh-theme files
-  au BufRead,BufNewFile *.zsh-theme set syntax=sh
-  " For Haml
-  au! BufRead,BufNewFile *.haml setfiletype haml
-
-  " Put these in an autocmd group, so that we can delete them easily.
-  augroup vimrcEx
-    au!
-    " When editing a file, always jump to the last known cursor position.
-    " Don't do it when the position is invalid or when inside an event handler
-    " (happens when dropping a file on gvim).
-    autocmd BufReadPost *
-      \ if line("'\"") > 0 && line("'\"") <= line("$") |
-      \   exe "normal g`\"" |
-      \ endif
-    " Automatically load .vimrc source when saved
-    autocmd BufWritePost .vimrc nested source $MYVIMRC
-  augroup END
-else
-  " always set autoindenting on
-  set autoindent
-endif " has("autocmd")
-
-if executable('fzf')
-  " Remap ctrl-P to execute fzf :)
-  nnoremap <silent> <C-p> :Files<CR>
-
-  command! -bang -nargs=? -complete=dir Files
-    \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
-
-  " Remap ctrl-m (and enter key) to toggle open files.
-  nnoremap <silent> <C-m> :Windows<CR>
-endif
-
-if executable('rg')
-  " Space key will open up search.
-  nnoremap <Space> :Rg<CR>
-  nnoremap <leader><Space> :Rg!<CR>
-
-  " Use rg for :grep if available. But we should prefer to use :Rg.
-  set grepprg=rg\ --vimgrep\ --color=never\ --no-heading\ --hidden
-
-  let $FZF_DEFAULT_COMMAND = 'rg --hidden -l ""'
-
-  let g:gutentags_file_list_command = 'rg --files'
-endif
-
-" Set up vim airline
-let g:airline_powerline_fonts = 1
-if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
-endif
-let g:airline_symbols.branch = ''
-let g:airline_symbols.readonly = ''
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
-let g:airline#extensions#tabline#show_buffers = 0
-
-" coc.nvim config
-if executable('node')
-  " if hidden is not set, TextEdit might fail.
-  set hidden
-
-  " Some servers have issues with backup files, see #649
-  set nobackup
-  set nowritebackup
-
-  " Better display for messages
-  set cmdheight=2
-
-  " You will have bad experience for diagnostic messages when it's default 4000.
-  set updatetime=300
-
-  " don't give |ins-completion-menu| messages.
-  set shortmess+=c
-
-  " always show signcolumns
-  set signcolumn=yes
-
-  " Use tab for trigger completion with characters ahead and navigate.
-  " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-  inoremap <silent><expr> <TAB>
-        \ pumvisible() ? "\<C-n>" :
-        \ <SID>check_back_space() ? "\<TAB>" :
-        \ coc#refresh()
-  inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-  function! s:check_back_space() abort
+function! InsertTabWrapper()
     let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~# '\s'
-  endfunction
-
-  " Use <c-space> to trigger completion.
-  inoremap <silent><expr> <c-space> coc#refresh()
-
-  " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
-  " Coc only does snippet and additional edit on confirm.
-  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-  " Or use `complete_info` if your vim support it, like:
-  " inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
-
-  " Use `[g` and `]g` to navigate diagnostics
-  nmap <silent> [g <Plug>(coc-diagnostic-prev)
-  nmap <silent> ]g <Plug>(coc-diagnostic-next)
-
-  " Remap keys for gotos
-  nmap <silent> gd <Plug>(coc-definition)
-  nmap <silent> gy <Plug>(coc-type-definition)
-  nmap <silent> gi <Plug>(coc-implementation)
-  nmap <silent> gr <Plug>(coc-references)
-
-  " Use K to show documentation in preview window
-  nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-  function! s:show_documentation()
-    if (index(['vim','help'], &filetype) >= 0)
-      execute 'h '.expand('<cword>')
+    if !col || getline('.')[col - 1] !~ '\k'
+        return "\<Tab>"
     else
-      call CocAction('doHover')
+        return "\<C-p>"
     endif
-  endfunction
+endfunction
+inoremap <Tab> <C-r>=InsertTabWrapper()<CR>
+inoremap <S-Tab> <C-n>
 
-  " Highlight symbol under cursor on CursorHold
-  autocmd CursorHold * silent call CocActionAsync('highlight')
+" Switch between the last two files
+nnoremap <Leader><Leader> <C-^>
 
-  " Remap for rename current word
-  nmap <leader>rn <Plug>(coc-rename)
+" Get off my lawn
+nnoremap <Left> :echoe "Use h"<CR>
+nnoremap <Right> :echoe "Use l"<CR>
+nnoremap <Up> :echoe "Use k"<CR>
+nnoremap <Down> :echoe "Use j"<CR>
 
-  " Remap for format selected region
-  xmap <leader>f  <Plug>(coc-format-selected)
-  nmap <leader>f  <Plug>(coc-format-selected)
+" vim-test mappings
+nnoremap <silent> <Leader>t :TestFile<CR>
+nnoremap <silent> <Leader>s :TestNearest<CR>
+nnoremap <silent> <Leader>l :TestLast<CR>
+nnoremap <silent> <Leader>a :TestSuite<CR>
+nnoremap <silent> <Leader>gt :TestVisit<CR>
 
-  augroup mygroup
-    autocmd!
-    " Setup formatexpr specified filetype(s).
-    autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-    " Update signature help on jump placeholder
-    autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-  augroup end
+" Run commands that require an interactive shell
+nnoremap <Leader>r :RunInInteractiveShell<Space>
 
-  " Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
-  xmap <leader>a  <Plug>(coc-codeaction-selected)
-  nmap <leader>a  <Plug>(coc-codeaction-selected)
+" Treat <li> and <p> tags like the block tags they are
+let g:html_indent_tags = 'li\|p'
 
-  " Remap for do codeAction of current line
-  nmap <leader>ac  <Plug>(coc-codeaction)
-  " Fix autofix problem of current line
-  nmap <leader>qf  <Plug>(coc-fix-current)
+" Set tags for vim-fugitive
+set tags^=.git/tags
 
-  " Create mappings for function text object, requires document symbols feature of languageserver.
-  xmap if <Plug>(coc-funcobj-i)
-  xmap af <Plug>(coc-funcobj-a)
-  omap if <Plug>(coc-funcobj-i)
-  omap af <Plug>(coc-funcobj-a)
+" Open new split panes to right and bottom, which feels more natural
+set splitbelow
+set splitright
 
-  " Use <tab> for select selections ranges, needs server support, like: coc-tsserver, coc-python
-  nmap <silent> <TAB> <Plug>(coc-range-select)
-  xmap <silent> <TAB> <Plug>(coc-range-select)
-  xmap <silent> <S-TAB> <Plug>(coc-range-select-backword)
+" Quicker window movement
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-h> <C-w>h
+nnoremap <C-l> <C-w>l
 
-  " Use `:Format` to format current buffer
-  command! -nargs=0 Format :call CocAction('format')
+" Move between linting errors
+nnoremap ]r :ALENextWrap<CR>
+nnoremap [r :ALEPreviousWrap<CR>
 
-  " Use `:Fold` to fold current buffer
-  command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+" Map Ctrl + p to open fuzzy find (FZF)
+nnoremap <c-p> :Files<cr>
 
-  " use `:OR` for organize import of current buffer
-  command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+" Set spellfile to location that is guaranteed to exist, can be symlinked to
+" Dropbox or kept in Git and managed outside of thoughtbot/dotfiles using rcm.
+set spellfile=$HOME/.vim-spell-en.utf-8.add
 
-  " Add status line support, for integration with other plugin, checkout `:h coc-status`
-  set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+" Autocomplete with dictionary words when spell check is on
+set complete+=kspell
 
-  " Using CocList
-  " Show all diagnostics
-  nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
-  " Manage extensions
-  nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
-  " Show commands
-  nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
-  " Find symbol of current document
-  nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
-  " Search workspace symbols
-  nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
-  " Do default action for next item.
-  nnoremap <silent> <space>j  :<C-u>CocNext<CR>
-  " Do default action for previous item.
-  nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
-  " Resume latest coc list
-  nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
-endif
+" Always use vertical diffs
+set diffopt+=vertical
 
 " Local config
-if filereadable(glob("~/.vimrc.local"))
+if filereadable($HOME . "/.vimrc.local")
   source ~/.vimrc.local
 endif

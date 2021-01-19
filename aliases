@@ -1,13 +1,9 @@
 # Unix
+alias ll="ls -al"
 alias ln="ln -v"
 alias mkdir="mkdir -p"
 alias e="$EDITOR"
 alias v="$VISUAL"
-alias tree="tree -a"
-alias ls="colorls" # gem install colorls
-alias ll="ls -a -l"
-alias cat="bat"    # brew install bat
-
 
 # Bundler
 alias b="bundle"
@@ -19,25 +15,7 @@ alias s="rspec"
 # Pretty print the path
 alias path='echo $PATH | tr -s ":" "\n"'
 
-# Tools
-alias mux=tmuxinator
-
-# Python
-alias python=python3
-alias ipy="python -c 'import IPython;IPython.terminal.ipapp.launch_new_instance()'"
-alias pip-compile="pip-compile --no-index"
-
-# AWS CLI
-alias lsAutoScaling="aws autoscaling describe-auto-scaling-groups | jq -r .AutoScalingGroups[].AutoScalingGroupName"
-alias lsInstances="aws ec2 describe-instances --filters "Name=instance-state-name,Values=running,stopped,stopping" | jq -r '.Reservations[].Instances[] | .InstanceId + \" Priv: \" + .PrivateIpAddress + \" Pub: \" + .PublicIpAddress + \" Name: \" + (.Tags[]//[]|select(.Key==\"Name\")|.Value)'"
-alias lsLambdas="aws lambda list-functions | jq -r .Functions[].FunctionName"
-alias lsStacks="aws cloudformation list-stacks --stack-status-filter CREATE_COMPLETE UPDATE_COMPLETE UPDATE_ROLLBACK_COMPLETE | jq -r .StackSummaries[].StackName"
-alias lsRds="aws rds describe-db-clusters | jq -r '.DBClusters[] | .DBClusterIdentifier + \" URI: \" + .ReaderEndpoint'"
-alias lsStreams="aws kinesis list-streams | jq -r .StreamNames[]"
-
-# Github
-alias prs="gh pr --all --list --detailed"
-alias myprs="gh pr --me --all --link"
-
-# Include all custom aliases
-for file in $(find ~ -iname ".aliases.*" -maxdepth 1); do source "$file"; done
+# Include custom aliases
+if [[ -f ~/.aliases.local ]]; then
+  source ~/.aliases.local
+fi

@@ -1,2 +1,3 @@
-EXCLUDES="README.md LICENSE images *fish*"
-DOTFILES_DIRS="$HOME/settings/dotfiles-local $HOME/settings/dotfiles"
+EXCLUDES="README*.md LICENSE"
+DOTFILES_DIRS="$HOME/dotfiles-local $HOME/dotfiles"
+COPY_ALWAYS="git_template/HEAD"
