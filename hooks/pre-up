@@ -2,7 +2,7 @@
 set -x
 
 brew update && brew upgrade
-brew install tmuxinator zsh-syntax-highlighting jq bat jenv openssl pyenv pyenv-virtualenv nvm direnv git-flow diff-so-fancy romkatv/powerlevel10k/powerlevel10k
+brew install gh tmuxinator zsh-syntax-highlighting jq bat jenv openssl pyenv pyenv-virtualenv nvm direnv git-flow diff-so-fancy romkatv/powerlevel10k/powerlevel10k
 
 
 # Set the default shell to zsh if it isn't currently set to zsh
