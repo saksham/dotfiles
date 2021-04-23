@@ -44,3 +44,5 @@ for file in $(find ~ -iname ".zshrc.*" -maxdepth 1); do source "$file"; done
 for a in ~/.zsh/plugins/*.zsh; do source $a; done
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
