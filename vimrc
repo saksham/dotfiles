@@ -101,8 +101,8 @@ if executable('ag')
 endif
 
 " Make it obvious where 120 characters is
-set textwidth=120
-set colorcolumn=+1
+" set textwidth=120
+" set colorcolumn=+1
 
 " Numbers
 set number
