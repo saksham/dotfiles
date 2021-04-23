@@ -14,6 +14,14 @@ if [[ ! -d $HOME/.oh-my-zsh/ ]]; then
     git clone --depth=1 https://github.com/robbyrussell/oh-my-zsh.git "$HOME/.oh-my-zsh"
 fi
 
+# Clone Powerlevel10k if it isn't already present.
+if [[ ! -d $HOME/.oh-my-zsh/custom/themes/powerlevel10k ]]; then
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$HOME/.oh-my-zsh/custom/themes/powerlevel10k"
+else
+    # Pull any p10k updates.
+    git -C "$HOME/.oh-my-zsh/custom/themes/powerlevel10k" pull --quiet
+fi
+
 # Initialize plugins directory
 if [[ ! -d $HOME/.oh-my-zsh/custom/plugins ]]; then
     mkdir $HOME/.oh-my-zsh/custom/plugins
@@ -21,7 +29,7 @@ fi
 
 # Clone zsh-nvm if not done already
 if [[ ! -d $HOME/.oh-my-zsh/custom/plugins/zsh-nvm ]]; then
-    git clone git@github.com:lukechilds/zsh-nvm.git "$HOME/.oh-my-zsh/custom/plugins/zsh-nvm"
+    git clone --depth=1 git@github.com:lukechilds/zsh-nvm.git "$HOME/.oh-my-zsh/custom/plugins/zsh-nvm"
 else
     # Pull any updates
     git -C "$HOME/.oh-my-zsh/custom/plugins/zsh-nvm" pull --quiet
