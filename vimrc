@@ -100,8 +100,8 @@ if executable('ag')
   endif
 endif
 
-" Make it obvious where 80 characters is
-set textwidth=80
+" Make it obvious where 120 characters is
+set textwidth=120
 set colorcolumn=+1
 
 " Numbers
@@ -172,8 +172,6 @@ set spellfile=$HOME/.vim-spell-en.utf-8.add
 " Autocomplete with dictionary words when spell check is on
 set complete+=kspell
 
-" Always use vertical diffs
-set diffopt+=vertical
 
 " Local config
 if filereadable($HOME . "/.vimrc.local")
