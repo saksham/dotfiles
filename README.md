@@ -10,55 +10,11 @@ Inspired by [Thoughtbot dotfiles](https://github.com/saksham/dotfiles) and the o
 
 ## Setting up your Local Machine
 
-_[Go to the next section](#installation) if you have already configured these
-dotfiles on your machine once, or if you are SSHing into another machine.
-These setup instructions only need to be done once on a local machine._
-
-New machines require two tasks to be done which are not part of the setup
-script:
-
-* installing (and using) Powerline/Font Awesome-compatible fonts, and
-* using the Solarized colorscheme.
+* Install [iterm2](https://iterm2.com/)
+* Install [homebrew](https://brew.sh/)
+* Install [powerline10k](https://github.com/romkatv/powerlevel10k)
 
 ### MacOS
-
-#### Installing Fonts with Custom Glyph Support
-
-We will be using [Nerd Fonts][nerd-fonts] to patch in all of our symbols.
-This font aggregator is nice in the sense that it collects many different glyphs
-from various sources.
-(We'll be using a lot of different symbols!)
-
-You'll first want to install a pre-patched font.
-There are multiple ways to do this.
-If you prefer to use the browser, download `Droid Sans Mono Nerd Font
-Complete.otf` from the Nerd Fonts [prepatched fonts folder][prepatched].
-Clicking on the file from Finder after downloading it should be sufficient.
-
-Alternatively, if you have Homebrew, you can install it from the command line.
-
-```shell
-brew tap homebrew/cask-fonts
-brew cask install font-droidsansmono-nerd-font
-```
-
-Next, you'll want to configure iTerm to use the new font.
-
-1. Go to the `Text` tab in your current iTerm profile and select the option to
-   `Use a different font for non-ASCII text`.
-2. In the same tab, select `Droid Sans Mono Nerd Font` as the font for non-ASCII
-   text.
-
-The Powerline symbols included in the font might not align well.
-As a remedy, iTerm has a `Use built-in Powerline glyphs` option to substitute
-the characters with its own built-in alternative characters.
-I'd recommend checking that option.
-
-The Text section of my iTerm settings looks like the picture below.
-For ASCII text, I use `Menlo Regular` (which is a native font) and use `14pt`
-for all font types.
-
-![Text section of iTerm settings](images/Fonts.png)
 
 #### Solarized on iTerm
 
@@ -67,17 +23,6 @@ The Solarized colors for iTerm can be found in its
 Import [`Solarized Dark.itermcolors`][itermcolors] as a colorscheme for iTerm.
 In the `Colors` section of your iTerm profile, use the `Solarized Dark` preset.
 
-#### Enable Copy/Paste in Tmux
-
-On Macs, `pbcopy` and `pbpaste` don't natively work in tmux.
-Luckly there's a [Homebrew][homebrew] formula to fix that.
-
-```shell
-brew install reattach-to-user-namespace
-```
-
-The tmux configuration will do the rest for you.
-Note that this only applies to machines running MacOS.
 
 #### Enable Mouse Wheel Scrolling in Vim on iTerm
 
@@ -96,7 +41,6 @@ It's used for a few shortcuts, such as resizing tmux panes.
 
 * Install [rcm](https://github.com/thoughtbot/rcm):
   ```
-    brew tap thoughtbot/formulae
     brew install rcm
   ```
 * Create a folder called settings in your $HOME directory.
