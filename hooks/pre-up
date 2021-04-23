@@ -2,7 +2,7 @@
 set -x
 
 brew update && brew upgrade
-brew install tmuxinator zsh-syntax-highlighting jq bat jenv openssl pyenv pyenv-virtualenv nvm direnv git-flow diff-so-fancy
+brew install tmuxinator zsh-syntax-highlighting jq bat jenv openssl pyenv pyenv-virtualenv nvm direnv git-flow diff-so-fancy romkatv/powerlevel10k/powerlevel10k
 
 
 # Set the default shell to zsh if it isn't currently set to zsh
@@ -12,14 +12,6 @@ fi
 # Clone Oh My Zsh if it isn't already present
 if [[ ! -d $HOME/.oh-my-zsh/ ]]; then
     git clone --depth=1 https://github.com/robbyrussell/oh-my-zsh.git "$HOME/.oh-my-zsh"
-fi
-
-# Clone Powerlevel10k if it isn't already present.
-if [[ ! -d $HOME/.oh-my-zsh/custom/themes/powerlevel10k ]]; then
-    git clone https://github.com/romkatv/powerlevel10k.git "$HOME/.oh-my-zsh/custom/themes/powerlevel10k"
-else
-    # Pull any p10k updates.
-    git -C "$HOME/.oh-my-zsh/custom/themes/powerlevel10k" pull --quiet
 fi
 
 # Initialize plugins directory
