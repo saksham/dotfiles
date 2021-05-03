@@ -7,3 +7,7 @@ setopt extendedglob
 
 # Allow [ or ] whereever you want
 unsetopt nomatch
+
+# Additional shell completions
+setopt complete_aliases
+

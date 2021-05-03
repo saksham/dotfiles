@@ -110,6 +110,7 @@ plugins=(
   colored-man-pages
   nvm
   zsh-nvm
+  direnv
 )
 
 source $ZSH/oh-my-zsh.sh
