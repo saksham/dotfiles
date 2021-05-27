@@ -27,7 +27,3 @@ rename the file to \`zprofile':
 MSG
 fi
 
-# Get rid of compinit errors
-# https://stackoverflow.com/questions/13762280/zsh-compinit-insecure-directories/22753363#22753363
-compaudit | xargs chmod g-w
-
