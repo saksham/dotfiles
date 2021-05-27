@@ -47,8 +47,8 @@ function prompt_aws_profile() {
 
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
   os_icon
-  virtualenv
   nvm
+  virtualenv
   ssh
   root_indicator
   dir
@@ -99,7 +99,9 @@ ZSH_DISABLE_COMPFIX="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
+  oc
   git
+  nvm
   wd
   ssh-agent
   tmux
@@ -108,7 +110,6 @@ plugins=(
   git-flow
   fzf
   colored-man-pages
-  nvm
   zsh-nvm
   direnv
 )
