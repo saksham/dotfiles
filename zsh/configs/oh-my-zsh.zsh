@@ -45,6 +45,24 @@ function prompt_aws_profile() {
   p10k segment -f "white" -b ${color} -t "$AWS_PROFILE" -c "$AWS_PROFILE"
 }
 
+# Powerlevel9K prompt segment for Openshift
+function prompt_oc_context(){
+  project=$(oc config view --minify --output 'jsonpath={..current-context}' 2>/dev/null)
+  if [ $? -ne 0 ]; then
+    return
+  fi
+  local color="none"
+  case $project in
+    dev*) color="green" ;;
+    sandbox*) color="#808000" ;;
+    uat*) color="yellow" ;;
+    pre-prod*) color="#FFA500" ;;
+    prod*) color="red" ;;
+  esac
+
+  p10k segment -f "white" -b "${color}" -t "$project" -c "$project"
+}
+
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
   os_icon
   nvm
@@ -55,6 +73,7 @@ POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
   vcs
 )
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(
+  oc_context
   aws_profile
   status
   background_jobs
