@@ -1,12 +1,14 @@
 #!/bin/sh
-set -x
+set -e
 
 brew update && brew upgrade
 brew install gh tmuxinator zsh-syntax-highlighting jq bat jenv openssl pyenv pyenv-virtualenv nvm direnv git-flow diff-so-fancy romkatv/powerlevel10k/powerlevel10k
 
 
 # Set the default shell to zsh if it isn't currently set to zsh
-if [[ ! "$SHELL" == "$(command -v zsh)" ]]; then
+if [[ $SHELL =~ ^.*zsh ]]; then
+    echo "Already using ZSH as the default shell"
+else
     chsh -s "$(command -v zsh)"
 fi
 # Clone Oh My Zsh if it isn't already present
