@@ -65,6 +65,7 @@ function prompt_oc_context(){
 
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
   os_icon
+  rbenv
   nvm
   virtualenv
   ssh
@@ -131,6 +132,7 @@ plugins=(
   colored-man-pages
   zsh-nvm
   direnv
+  rbenv
 )
 
 source $ZSH/oh-my-zsh.sh
