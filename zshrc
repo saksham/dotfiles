@@ -1,3 +1,7 @@
+# Setup homewbrew
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+
 # load custom executable functions
 for function in ~/.zsh/functions/*; do
   source $function

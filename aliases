@@ -5,9 +5,9 @@ alias mkdir="mkdir -p"
 alias e="$EDITOR"
 alias v="$VISUAL"
 alias tree="tree -a"
-alias ls="colorls" # gem install colorls
+alias ls="$(gem environment gemdir)/bin/colorls"
 alias ll="ls -a -l"
-alias cat="bat"    # brew install bat
+alias cat="bat"
 
 
 # Bundler

@@ -1,9 +1,12 @@
 #!/bin/sh
 set -e
 
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
 brew update && brew upgrade
 brew install gh tmuxinator zsh-syntax-highlighting jq bat jenv openssl pyenv pyenv-virtualenv nvm direnv git-flow diff-so-fancy romkatv/powerlevel10k/powerlevel10k rbenv ruby-build
 
+gem install colorls
 
 # Set the default shell to zsh if it isn't currently set to zsh
 if [[ $SHELL =~ ^.*zsh ]]; then
