@@ -1,0 +1,26 @@
+#!python
+
+import click
+from PIL import Image
+import pillow_heif
+import os
+
+@click.command()
+@click.argument("folder", type=click.Path(exists=True), default=".")
+def convert(folder):
+    os.chdir(folder)
+    filenames = [f for f in os.listdir() if f.endswith('HEIC')]
+    for f in filenames:
+        heif_file = pillow_heif.read(f)
+        image = Image.frombytes(
+            heif_file.mode,
+            heif_file.size,
+            heif_file.data,
+            "raw",
+            heif_file.mode,
+            heif_file.stride,
+        )
+        image.save(f'{f}.jpg')
+
+if __name__ == "__main__":
+    convert()
