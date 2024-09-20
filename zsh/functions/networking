@@ -9,3 +9,9 @@ killPort(){
   port=$1
   kill -9 $(lsof -t -i tcp:$port)
 }
+
+# Resets the DNS settings
+resetDns(){
+  sudo dscacheutil -flushcache; 
+  sudo killall -HUP mDNSResponder;
+}
